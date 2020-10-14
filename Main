@@ -1,0 +1,414 @@
+
+/* Trabalho final de PROGRAMACAO II
+   Alunos: Joao Gilberto Stachera e Lucas Natanael
+   Trabalho: Programa de gerenciamento de carros de uma revenda */
+
+#include <stdio.h>
+#include <stdlib.h>
+#define tamanho 500
+
+//int parametro;
+//int recebe.parametro;
+
+    FILE *fp, *fx, *fy;
+    int escolha;
+
+struct dados {
+
+    int codigo;
+    char marca[30];
+    char modelo[30];
+    float potencia;
+    int ano;
+    int portas;
+} carro[tamanho];
+
+
+    int recebeparametro (){
+
+int parametro;
+FILE *fp;
+
+if((fp = fopen("parametro.txt","r"))==NULL)
+ {
+    parametro = 1;
+    fp = fopen ("parametro.txt","w");
+    fprintf(fp, "%i", parametro);
+    fclose(fp);
+    return (parametro);
+
+ }
+ else
+
+    fscanf(fp,"%i",&parametro);
+    fclose(fp);
+    return (parametro);
+
+}
+
+
+int main(){
+
+    int x;
+    int opcao;
+
+    x = recebeparametro ();
+
+    opcao = menu ();
+
+
+
+        switch (opcao){
+
+
+            case (1) :
+            case1 (x);
+            break;
+
+            case (2) :
+            procura ();
+            break;
+
+            case (3) :
+            excluir ();
+            break;
+
+            case (4) :
+            listar ();
+            break;
+
+            default: break;
+
+        }
+
+
+    }
+
+
+
+    int menu (){
+
+    system("cls");
+    printf("\tMENU\n");
+    printf("\n\tBem-vindo ao programa de gerenciamento de frota:");
+    printf("\n\tEscolha uma das opcoes do menu:");
+    printf("\n\n\t----------------------------");
+    printf("\n\t1: Cadastro de novo veiculo\t\n\n");
+    printf("\t2: Procura de veiculos\t\n\n");
+    printf("\t3: Excluir veiculo\t\n\n");
+    printf("\t4: Listar veiculos\t\n\n");
+    printf("\t5: Sair\t\n");
+    printf("\t----------------------------\n\t");
+    // posso colocar varios printf aqui
+
+    setbuf(stdout, 0);
+    scanf("%i", &escolha);
+    system("cls");
+    return (escolha);
+
+    }
+
+
+    int case1 (x){
+        char nomearq [3];
+        int i;
+
+        do {
+
+        system("cls");
+        printf("\tMENU -> CADASTRO DE VEICULO\n");
+        printf("\n\tCADASTRANDO VEICULO NUMERO: -%i-\n", x);
+
+        printf("\n\tDigite a marca do %d carro:  ",x);
+        scanf("%s",&carro[x].marca);
+
+        printf("\n\tDigite o modelo do %d carro:  ",x);
+        scanf("%s",&carro[x].modelo);
+
+        printf("\n\tDigite a potencia do %d carro:  ",x);
+        scanf("%f",&carro[x].potencia);
+
+       // printf("\n\tDigite o ano do %d carro: ",x);
+        //scanf("%i",&carro[x].ano);
+
+       // printf("\n\tDigite a qtde de portas do %d carro: ",x);
+       // scanf("%i",&carro[x].portas);
+
+        //char nome[]="veiculo_%i.txt", y;
+
+
+        fy = fopen("parametro.txt","r");
+        fscanf(fy,"%s",&nomearq);
+        fclose(fy);
+
+        system("cls");
+
+        if((fp = fopen(nomearq,"w"))==NULL){
+         printf("\n\tNao foi possivel cadastrar o %d veiculo\n\n\t"), x;
+         exit(1);
+         }
+
+         else
+         printf("\n\n\tVeiculo %d cadastrado com sucesso!! \n\n", x);
+         fprintf (fp,"%s %s %.1f\n",carro[x].marca, carro[x].modelo, carro[x].potencia);
+         fclose(fp);
+
+
+        x = x + 1;
+        fx = fopen ("parametro.txt","w");
+        fprintf(fx, "%i", x);
+        fclose(fx);
+
+
+
+        printf("\n\tVoce deseja:\n\t 1 - Cadastrar novo veiculo\n\t 2 - Voltar ao menu\n\t 3 - Sair\n\n\t");
+        scanf("%i", &i);
+
+        if (i == 2){
+
+            system("cls");
+            main();
+        }
+        } while (i < 3);
+        }
+
+    int procura (x){
+
+    FILE *fz;
+    char i [5];
+    char potencia [8];
+    char z [20];
+    char marca[20];
+    char modelo[20];
+    int t, u;
+
+    system("cls");
+
+    do {
+    printf("\tMENU -> PROCURA DE VEICULO\n");
+    printf("\n\tDIGITE O CODIGO DO VEICULO A SER PROCURADO: ");
+    scanf("%s", &i);
+    strcpy(z,i);
+
+    if((fz = fopen(i,"r"))==NULL)
+         {
+
+            printf("\n\n\t-O VEICULO NAO SE ENCONTRA CADASTRADO-");
+            printf("\n\n\tPressione ENTER para voltar a procura\n\n\t");
+            getch();
+            procura();
+
+
+         }
+         else
+
+            fscanf(fz,"%s %s %s",&marca, &modelo, &potencia);
+            fclose(fz);
+            printf("\n\t----------------");
+            printf("\n\tCADASTRO NUMERO: %s", &z);
+            printf("\n\n\tMARCA: %s\n\tMODELO: %s\n\tPOTENCIA: %s\t", &marca, &modelo, &potencia);
+
+
+
+            printf("\n\t----------------\n\n");
+            printf("\n\tO que voce deseja fazer?");
+            printf("\n\t1 - Procurar novo veiculo");
+            printf("\n\t2 - Voltar para o menu");
+            printf("\n\t3 - Excluir veiculo");
+            printf("\n\t4 - Sair\n\n\t");
+            scanf("%i", &t);
+            system("cls");
+
+            if (t == 2){
+                main ();
+            }   else if (t == 3){
+
+                    remove (i);
+                    printf("O VEICUCLO %s FOI EXLCUIDO\n\t", z);
+                    printf("O que voce deseja fazer?");
+                    printf("\n\t1 - Excluir novo veiculo"); //mandar para funcao remover
+                    printf("\n\t2 - Procurar novo veiculo");
+                    printf("\n\t3 - Voltar para o menu");
+                    printf("\n\t4 - Sair\n\n\t");
+                    scanf("&i", &u);
+
+                        if (u == 1){
+
+                            excluir();
+
+                        } else if (u == 3){
+
+                            main ();
+
+                        }   else if (u == 4){
+
+                            exit (0);
+
+                        }
+
+
+
+
+         }
+
+
+
+    } while (t < 4);
+    }
+
+    int excluir (){
+
+        char i[3];
+        int t,u;
+        FILE *fe;
+
+        do {
+
+        system("cls");
+        printf("\tMENU -> EXCLUIR VEICULO\n");
+        printf("\n\tDigite o codigo do veiculo a ser exlcuido: ");
+        scanf("%s", &i);
+        if ((fe = fopen(i,"r"))==NULL) {
+
+            printf("\n\n\tNao foi possivel excluir o veiculo: %s", i);
+            printf("\n\n\t1 - Excluir outro veiculo");
+            printf("\n\t2 - Voltar ao menu");
+            printf("\n\t3 - Sair\n\n\t");
+            scanf("%i", &u);
+
+            if (u == 1){
+
+            excluir();
+
+        }   else if (u == 2){
+
+
+            main ();
+
+            }   else if (u == 3){
+
+
+            exit(0);
+
+            }
+
+        } else
+
+        fclose(fe);
+        remove (i);
+        printf("\n\tO veiculo -%s- foi exlcuido com sucesso!\n\t", i);
+        printf("\n\tO que voce deseja fazer?");
+        printf("\n\t1 - Excluir novo veiculo");
+        printf("\n\t2 - Voltar ao menu");
+        printf("\n\t3 - Sair\n\n\t");
+        scanf("%i", &t);
+
+        if (t == 2){
+
+            main();
+
+        }   else if (t == 3){
+
+
+            exit(0);
+
+            }
+
+
+        } while (t == 1);
+    }
+
+    int listar(){
+
+
+        FILE *f1, *f2, *f3, *f4, *f5;
+        int i, y, u;
+        char potencia [8];
+        char marca[20];
+        char modelo[20];
+        char lista[3];
+
+        f1 = fopen("parametro.txt","r");
+        fscanf(f1,"%i",&y);
+        fclose(f1);
+
+        printf("\tMENU -> LISTA DE VEICULOS");
+        printf("\n\n\tOs veiculos cadastrados sao:");
+        printf("\n\n\t---------------------------------------------------", i);
+        for (i=1; i<=y; i++){
+
+
+                    if((f2 = fopen("lista.txt","r"))==NULL){
+
+                        //lista = 1;
+                        f2 = fopen ("lista.txt","w");
+                        fprintf(f2, "%i", i);
+                        fclose(f2);
+                        //return (parametro);
+
+                     }
+                        f3 = fopen("lista.txt","r");
+
+                        fscanf(f3,"%s",&lista);
+                        fclose(f3);
+                        //return (parametro);
+                        //printf("ATE AQUI FOI %s", lista);
+
+
+
+
+                    if((f4 = fopen(lista,"r"))!=NULL){
+                    //
+
+                       fscanf(f4,"%s %s %s",&marca, &modelo, &potencia);
+                       fclose(f4);
+                       printf("\n\t-%s-   MARCA: %s  MODELO: %s  POTENCIA: %s", &lista, &marca, &modelo, &potencia);}
+
+                        f5 = fopen("lista.txt","w");
+
+                        fprintf(f5, "%i", i);
+                        fclose(f5);
+
+                        //return (parametro);
+
+               }        remove("lista.txt");
+                        printf("\n\t---------------------------------------------------", i);
+                        printf("\n\n\t1 - Voltar ao menu");
+                        printf("\n\t2 - Excluir veiculo");
+                        printf("\n\t3 - Sair\n\n\t");
+                        scanf("%i", &u);
+
+                        if (u == 1){
+
+                        main();
+
+                    }   else if (u == 2){
+
+                        excluir ();
+
+                        }   else if (u == 3){
+
+
+                        exit(0);
+
+                        }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
